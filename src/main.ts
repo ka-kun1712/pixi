@@ -1,6 +1,7 @@
 import {
   Application,
   Assets,
+  Container,
   Graphics,
   RenderTexture,
   Sprite,
@@ -71,14 +72,10 @@ import {
   document.getElementById("pixi-container")!.appendChild(app.canvas);
 
   const bg = new Sprite({
-    texture: Texture.WHITE,
+    texture: Texture.EMPTY,
     width: app.screen.width,
     height: app.screen.height,
     interactive: true,
-  });
-
-  bg.on("pointerdown", (ev) => {
-    console.log(ev);
   });
 
   app.stage.addChild(bg);
@@ -95,17 +92,21 @@ import {
 
   const graphics = new Graphics().circle(0, 0, 15).fill("white");
 
-  const circle = new Sprite({
-    anchor: 0.5,
-    position: {
-      x: 50,
-      y: 50,
-    },
+  const container = new Container();
+
+  app.stage.addChild(container);
+
+  let bullets: Sprite[] = [];
+
+  bg.on("pointerdown", (ev) => {
+    console.log(ev);
+    const bullet = new Sprite({
+      anchor: 0.5,
+    });
+    bullet.addChild(graphics.clone());
+    container.addChild(bullet);
+    bullets.push(bullet);
   });
-
-  circle.addChild(graphics);
-
-  app.stage.addChild(circle);
 
   // Listen for animate update
   app.ticker.add((time) => {
@@ -120,6 +121,8 @@ import {
     if (key.y != 0) {
       bunny.y += key.y * time.deltaTime * double;
     }
-    circle.position.x += 0.5 * time.deltaTime;
+      bullets.forEach((v,i,array)=>{
+      console.log(array[i])
+    })
   });
 })();
