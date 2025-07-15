@@ -21,10 +21,11 @@ import { Application, Assets, Graphics, RenderTexture, Sprite, Texture } from "p
         key.x = 1;
         break;
       case "Shift":
-       key.dash = true
-       break;
+        key.dash = true;
+        break;
     }
   });
+
   window.addEventListener("keyup", (ev) => {
     switch (ev.key) {
       case "ArrowUp":
@@ -40,10 +41,11 @@ import { Application, Assets, Graphics, RenderTexture, Sprite, Texture } from "p
         key.x = 0;
         break;
       case "Shift":
-       key.dash = false
-       break;
+        key.dash = false;
+        break;
     }
   });
+
   // Create a new application
   const app = new Application();
 
@@ -63,23 +65,25 @@ import { Application, Assets, Graphics, RenderTexture, Sprite, Texture } from "p
   // Add the bunny to the stage
   app.stage.addChild(bunny);
 
-  const graphics = new Graphics().circle(0,0,15).fill("white")
+  const graphics = new Graphics().circle(0, 0, 15).fill("white");
 
- const circle = new Sprite({
-  position: {
-    x : 50,
-    y : 0,
-  },
-  anchor:0.5
- }).addChild(graphics)
+  const circle = new Sprite({
+    anchor: 0.5,
+    position: {
+      x: 50,
+      y: 50,
+    },
+  });
 
-app.stage.addChild(circle)
+  circle.addChild(graphics);
+
+  app.stage.addChild(circle);
 
   // Listen for animate update
   app.ticker.add((time) => {
     console.log(key);
     let double = 1;
-    if (key.dash){
+    if (key.dash) {
       double = 3;
     }
     if (key.x != 0) {
@@ -88,6 +92,6 @@ app.stage.addChild(circle)
     if (key.y != 0) {
       bunny.y += key.y * time.deltaTime * double;
     }
-    circle.rotation += 0.1 * time.deltaTime
+    circle.position.x += 0.5 * time.deltaTime;
   });
 })();
