@@ -1,6 +1,16 @@
-import { Application, Assets, Graphics, RenderTexture, Sprite, Texture } from "pixi.js";
+import {
+  Application,
+  Assets,
+  Graphics,
+  RenderTexture,
+  Sprite,
+  Texture,
+} from "pixi.js";
 
 (async () => {
+  // Create a new application
+  const app = new Application();
+
   let key = {
     y: 0,
     x: 0,
@@ -9,15 +19,19 @@ import { Application, Assets, Graphics, RenderTexture, Sprite, Texture } from "p
   window.addEventListener("keydown", (ev) => {
     switch (ev.key) {
       case "ArrowUp":
+      case "w":
         key.y = -1;
         break;
       case "ArrowDown":
+      case "s":
         key.y = 1;
         break;
       case "ArrowLeft":
+      case "a":
         key.x = -1;
         break;
       case "ArrowRight":
+      case "d":
         key.x = 1;
         break;
       case "Shift":
@@ -29,15 +43,19 @@ import { Application, Assets, Graphics, RenderTexture, Sprite, Texture } from "p
   window.addEventListener("keyup", (ev) => {
     switch (ev.key) {
       case "ArrowUp":
+      case "w":
         key.y = 0;
         break;
       case "ArrowDown":
+      case "s":
         key.y = 0;
         break;
       case "ArrowLeft":
+      case "a":
         key.x = 0;
         break;
       case "ArrowRight":
+      case "d":
         key.x = 0;
         break;
       case "Shift":
@@ -46,14 +64,24 @@ import { Application, Assets, Graphics, RenderTexture, Sprite, Texture } from "p
     }
   });
 
-  // Create a new application
-  const app = new Application();
-
   // Initialize the application
   await app.init({ background: "#1099bb", resizeTo: window });
 
   // Append the application canvas to the document body
   document.getElementById("pixi-container")!.appendChild(app.canvas);
+
+  const bg = new Sprite({
+    texture: Texture.WHITE,
+    width: app.screen.width,
+    height: app.screen.height,
+    interactive: true,
+  });
+
+  bg.on("pointerdown", (ev) => {
+    console.log(ev);
+  });
+
+  app.stage.addChild(bg);
 
   // Create a bunny Sprite
   const bunny = new Sprite({
@@ -81,7 +109,7 @@ import { Application, Assets, Graphics, RenderTexture, Sprite, Texture } from "p
 
   // Listen for animate update
   app.ticker.add((time) => {
-    console.log(key);
+    // console.log(key);
     let double = 1;
     if (key.dash) {
       double = 3;
